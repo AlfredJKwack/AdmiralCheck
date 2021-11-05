@@ -1,48 +1,43 @@
 <?php
 
-	// all output goes to to a file
-	$ob_file = fopen("results.txt", "w") or die("Unable to open file!");
+// more efficient implementation of curl_multi()
+// see https://github.com/LionsAd/rolling-curl
+require 'rolling-curl/RollingCurl.php';
+require 'rolling-curl/RollingCurlGroup.php';
 
-	global $strout;
+class MyInfoCollector {
+    private $rc;
+	private $ob_file;
+	private $strout; 
 
-	// more efficient implementation of curl_multi()
-	// see https://github.com/LionsAd/rolling-curl
-    require 'rolling-curl/RollingCurl.php';
-    require 'rolling-curl/RollingCurlGroup.php';
+    function __construct(){
+        $this->rc = new RollingCurl(array($this, 'processPage'));
+        $this->ob_file = fopen("results.txt", "w") or die("Unable to open file!");
+    }
 
-	// an array of URL's to fetch
-	$urls = array("http://www.google.com",
-              "http://www.facebook.com",
-              "http://www.yahoo.com",
-          	  "http://bandonedaction.com", 
-          	  "http://aboardamusement.com",
-          	  "http://decisivebase.com"
-          	);    
+    function processPage($response, $info){
+    	$this->strout .= $info['http_code']."\t";
+      	$this->strout .= $info['url']."\r";
+    }
 
-	// a function that will process the returned responses
-	function request_callback($response, $info) 
-	{
+    function run($urls){
+        foreach ($urls as $url){
+            $request = new RollingCurlRequest($url);
+            $this->rc->add($request);
+        }
+        $this->rc->execute();
 
-		$strout .= $info['url']."\t".$info['http-code']."\r";
-		echo $strout;
+		fwrite($this->ob_file, $this->strout);
+		fclose($this->ob_file);        
+    }
+}
 
-	}
-
-	// create a new RollingCurl object and pass it the name of your custom callback function
-	$rc = new RollingCurl("request_callback");
-
-	// the window size determines how many simultaneous requests to allow.  
-	$rc->window_size = 20;
-
-	foreach ($urls as $url) 
-	{
-	    // add each request to the RollingCurl object
-	    $request = new RollingCurlRequest($url);
-	    $rc->add($request);
-	}
-	$rc->execute(); 
-
-	fwrite($ob_file, $strout);
-	fclose($ob_file);
-
+$collector = new MyInfoCollector();
+$collector->run(array("http://www.google.com",
+      "http://www.facebook.com",
+      "http://www.yahoo.com",
+  	  "http://bandonedaction.com", 
+  	  "http://aboardamusement.com",
+  	  "http://decisivebase.com"
+  	));
 ?>
