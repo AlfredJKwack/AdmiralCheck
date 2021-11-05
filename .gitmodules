@@ -1,0 +1,3 @@
+[submodule "rolling-curl"]
+	path = rolling-curl
+	url = https://github.com/LionsAd/rolling-curl.git
