@@ -11,8 +11,11 @@ class MyInfoCollector {
 	private $strout; 
 
     function __construct(){
+
+    	$output_file = "results.txt";
         $this->rc = new RollingCurl(array($this, 'processPage'));
-        $this->ob_file = fopen("results.txt", "w") or die("Unable to open file!");
+        $this->ob_file = fopen($output_file, "w") or die("Unable to open file!");
+
     }
 
     function processPage($response, $info){
@@ -20,7 +23,7 @@ class MyInfoCollector {
     	$this->strout .= $info['http_code']."\t";
 
 
-    	// find our nice string
+    	// find our nice Admiral string
     	$lookfor = "This domain is used by digital publishers to control access to copyrighted content ";
     	$string = str_replace("\r\n", "\n", $response); // windows -> unix
 		$string = str_replace("\r", "\n", $string);   // remaining -> unix     
@@ -40,10 +43,20 @@ class MyInfoCollector {
 
     }
 
-    function run($urls){
+    function run($input_file){
+
+	    function domainToUrl($domain){
+	    	return ("https://".$domain."/");
+	    }
+
+    	$urls = file($input_file, FILE_IGNORE_NEW_LINES);
+    	$urls = array_map('domainToUrl', $urls);
+
         foreach ($urls as $url){
+
             $request = new RollingCurlRequest($url);
             $this->rc->add($request);
+
         }
         $this->rc->execute();
 
@@ -53,11 +66,5 @@ class MyInfoCollector {
 }
 
 $collector = new MyInfoCollector();
-$collector->run(array("http://www.google.com",
-      "http://www.facebook.com",
-      "http://www.yahoo.com",
-  	  "http://bandonedaction.com", 
-  	  "http://aboardamusement.com",
-  	  "http://decisivebase.com"
-  	));
+$collector->run("AdmiraList/AdmiraList.txt");
 ?>
