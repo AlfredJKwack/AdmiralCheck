@@ -52,5 +52,7 @@ Icon
 ._*
 
 ##### Poject Specific
-.phpintel/
+
+# sublime phpintel plugin
+/.phpintel
 
