@@ -16,8 +16,28 @@ class MyInfoCollector {
     }
 
     function processPage($response, $info){
+
     	$this->strout .= $info['http_code']."\t";
-      	$this->strout .= $info['url']."\r";
+
+
+    	// find our nice string
+    	$lookfor = "This domain is used by digital publishers to control access to copyrighted content ";
+    	$string = str_replace("\r\n", "\n", $response); // windows -> unix
+		$string = str_replace("\r", "\n", $string);   // remaining -> unix     
+
+		if (strpos($string, $lookfor) !== false) {
+			
+			$this->strout .= "txt"."\t";
+
+		} else {
+
+			$this->strout .= "n/a"."\t";
+		}
+
+		$this->strout .= md5($string)."\t";
+
+		$this->strout .= $info['url']."\r";
+
     }
 
     function run($urls){
