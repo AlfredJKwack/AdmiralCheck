@@ -1,6 +1,6 @@
-[submodule "rolling-curl"]
-	path = rolling-curl
-	url = https://github.com/LionsAd/rolling-curl.git
 [submodule "AdmiraList"]
 	path = AdmiraList
 	url = https://github.com/jkrejcha/AdmiraList.git
+[submodule "RollingCurl"]
+	path = RollingCurl
+	url = https://github.com/PEPSIASAS/RollingCurl.git
