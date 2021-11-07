@@ -9,6 +9,8 @@ Clone the repo (incl submodules), open up your favorite terminal and run `php ma
 
 * _AlCheckOut_analysis.txt_: a full dump of what we want to keep for analysis
 * _AlCheckOut_pr_dead.txt_: same as `AdmiraList/AdmiraList.txt` but pruned of dead domains.
+* _AlCheckOut_abstracts.txt_: a list of unique hashes found in _AlCheckOut_analysis.txt_ to narrow down differences between sites.
+* _AlCheckOut.json_: a json file with all the data for easy transformation and further processing.
 
 The structure of the _analysis_ file is as follows:
 
@@ -19,7 +21,7 @@ The structure of the _analysis_ file is as follows:
 
 ## Things to do
 
-Maybe generate an abstract version of the analysis file with only the unique hashes and an example domain thereof.
+I dunno...
 
 ## Contributing
 
