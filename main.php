@@ -13,7 +13,7 @@ $output_unique_hashes = "AlCheckOut_pr_dead.txt";
 /**
  * Creates an output file where all dead domains are removed.
  * This is useful to generate a PR at some point
- * @param  String $output_file Path to output file. I will be overwritten
+ * @param  String $output_file Path to output file. It will be overwritten
  * @param  Array  $data        Input data in the format used throughout
  * @return none
  */
@@ -33,7 +33,7 @@ function generateDeadPrFile($output_file, $data){
 /**
  * Creates a tab delimited output file ready for further analysis in your 
  * favorite data manipulation tool.
- * @param  String $output_file Path to output file. I will be overwritten
+ * @param  String $output_file Path to output file. It will be overwritten
  * @param  Array  $data        Input data in the format used throughout.
  * @return none
  */
