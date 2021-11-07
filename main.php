@@ -98,17 +98,19 @@ $rollingCurl->execute(function ($output, $info, $request) use (&$domains){
 
 	$lookfor = "This domain is used by digital publishers to control access to copyrighted content ";
 
+	// clean up the output a little
+	$cleanOutput = strip_tags($output);
+
     $requestAttributes = $request->getAttributes(); // callback goodness
     $domains[$requestAttributes['requestId']]["return_code"] = $info['http_code'];
-    $domains[$requestAttributes['requestId']]["md5"] = md5($output);
+    $domains[$requestAttributes['requestId']]["md5"] = md5($cleanOutput);
     $domains[$requestAttributes['requestId']]["url"] = $info['url'];
 
-	$string = str_replace(array("\r","\n","\t"), "", $output);
-	if (strpos($string, $lookfor) !== false) {
+	if (strpos($cleanOutput, $lookfor) !== false) {
 		$domains[$requestAttributes['requestId']]["txt_match"] =  "txt";
 	} else {
 		$domains[$requestAttributes['requestId']]["txt_match"] = "n/a";
-	} 
+	}
 
 });
 generateDeadPrFile($output_pr_dead, $domains);
