@@ -34,7 +34,7 @@ function generateDeadPrFile($output_file, $data){
  * Creates a tab delimited output file ready for further analysis in your 
  * favorite data manipulation tool.
  * @param  String $output_file Path to output file. I will be overwritten
- * @param  [type] $data        Input data in the format used throughout.
+ * @param  Array  $data        Input data in the format used throughout.
  * @return none
  */
 function generateAnalysisFile($output_file, $data){
