@@ -56,3 +56,6 @@ Icon
 # sublime phpintel plugin
 .phpintel/
 
+# test lists and output
+testData/
+
